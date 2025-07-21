@@ -1,9 +1,11 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { RoutedLink } from './routed-link';
 
 @Component({
   selector: 'app-nav-bar',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [RouterLink, RoutedLink],
   template: `
     <div class="navbar bg-base-100 shadow-sm">
       <div class="navbar-start">
@@ -28,32 +30,20 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
             tabindex="0"
             class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
-            <li><a>Item 1</a></li>
-            <li>
-              <a>Parent</a>
-              <ul class="p-2">
-                <li><a>Submenu 1</a></li>
-                <li><a>Submenu 2</a></li>
-              </ul>
-            </li>
-            <li><a>Item 3</a></li>
+            @for (link of links(); track link.label) {
+              <li>
+                <app-routed-link [href]="link.href" [label]="link.label" />
+              </li>
+            }
           </ul>
         </div>
-        <a class="btn btn-ghost text-xl">daisyUI</a>
+        <a routerLink="" class="btn btn-ghost text-xl">Home</a>
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1">
-          <li><a>Item 1</a></li>
-          <li>
-            <details>
-              <summary>Parent</summary>
-              <ul class="p-2">
-                <li><a>Submenu 1</a></li>
-                <li><a>Submenu 2</a></li>
-              </ul>
-            </details>
-          </li>
-          <li><a>Item 3</a></li>
+          @for (link of links(); track link.label) {
+            <li><app-routed-link [href]="link.href" [label]="link.label" /></li>
+          }
         </ul>
       </div>
       <div class="navbar-end">
@@ -63,4 +53,15 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   `,
   styles: ``,
 })
-export class NavBar {}
+export class NavBar {
+  links = signal([
+    {
+      href: ['about'],
+      label: 'About',
+    },
+    {
+      href: ['demos'],
+      label: 'Demos',
+    },
+  ]);
+}
