@@ -67,5 +67,9 @@ export class NavBar {
       href: ['links'],
       label: 'Share links',
     },
+    {
+      href: ['counter'],
+      label: 'Counter',
+    },
   ]);
 }
