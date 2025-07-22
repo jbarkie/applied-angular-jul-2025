@@ -25,15 +25,14 @@ import { ApiLink } from '../types';
           class="btn btn-square"
         />
         @for (tag of tags(); track tag) {
-          @if (tag === filterTag() || !filterTag()) {
-            <input
-              (click)="filterTag.set(tag)"
-              type="radio"
-              name="filter"
-              class="btn"
-              [attr.aria-label]="tag"
-            />
-          }
+          <input
+            (click)="filterTag.set(tag)"
+            type="radio"
+            name="filter"
+            class="btn"
+            [checked]="filterTag() === tag"
+            [attr.aria-label]="tag"
+          />
         }
       </form>
     }
