@@ -87,8 +87,9 @@ export class LinksList {
 
   tags = computed(() => {
     const links = this.linksResource.value() || [];
-    const allTags = new Set<string>();
-    links.forEach((link) => link.tags.forEach((tag) => allTags.add(tag)));
-    return Array.from(allTags);
+    const allTags = links.reduce((prev: string[], curr) => {
+      return [...prev, ...curr.tags];
+    }, []);
+    return Array.from(new Set(allTags));
   });
 }
