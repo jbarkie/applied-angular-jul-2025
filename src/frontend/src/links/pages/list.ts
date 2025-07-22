@@ -4,8 +4,10 @@ import {
   resource,
   signal,
   computed,
+  inject,
 } from '@angular/core';
 import { ApiLink } from '../types';
+import { LinksStore } from '../services/links-store';
 
 @Component({
   selector: 'app-links-list',
@@ -63,11 +65,13 @@ import { ApiLink } from '../types';
           <p>Sorry, no links. Add some!</p>
         }
       </ul>
+      <p class="mt-2">You are sorting by: {{ store.sortOrder() }}</p>
     }
   `,
   styles: ``,
 })
 export class LinksList {
+  store = inject(LinksStore);
   filterTag = signal<string | null>(null);
 
   linksResource = resource<ApiLink[], unknown>({
