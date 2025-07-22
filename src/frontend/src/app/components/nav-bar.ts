@@ -63,5 +63,9 @@ export class NavBar {
       href: ['demos'],
       label: 'Demos',
     },
+    {
+      href: ['links'],
+      label: 'Share links',
+    },
   ]);
 }
