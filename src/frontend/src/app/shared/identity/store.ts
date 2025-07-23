@@ -1,6 +1,6 @@
 import { createFeature, createReducer } from '@ngrx/store';
 
-type IdentityState = {
+export type IdentityState = {
   sub: string | null;
   roles: string[];
 };
