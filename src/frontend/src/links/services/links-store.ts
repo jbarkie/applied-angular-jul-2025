@@ -1,3 +1,5 @@
+import { withDevtools } from '@angular-architects/ngrx-toolkit';
+import { computed, inject } from '@angular/core';
 import {
   patchState,
   signalStore,
@@ -7,12 +9,11 @@ import {
   withState,
 } from '@ngrx/signals';
 import { setEntities, withEntities } from '@ngrx/signals/entities';
-import { ApiLink } from '../types';
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { LinksApiService } from './links-api';
+import { Store } from '@ngrx/store';
 import { exhaustMap, pipe, tap } from 'rxjs';
-import { computed, inject } from '@angular/core';
+import { selectSub } from '../../app/shared/identity/store';
+import { ApiLink } from '../types';
 import {
   setFetching,
   setIsFulfilled,
@@ -24,6 +25,7 @@ import {
   setFilterTag,
   withLinkFiltering,
 } from './link-filter-feature';
+import { LinksApiService } from './links-api';
 
 type SortOptions = 'newest' | 'oldest';
 
@@ -66,6 +68,8 @@ export const LinksStore = signalStore(
     };
   }),
   withComputed((store) => {
+    const reduxStore = inject(Store);
+    const userSub = reduxStore.selectSignal(selectSub);
     return {
       tags: computed(() => {
         const links = store.entities();
@@ -76,9 +80,20 @@ export const LinksStore = signalStore(
       }),
       filteredLinks: computed(() => {
         const tag = store.filterTag();
-        const entities = store.entities();
-        if (tag === null) return entities;
-        return (entities || []).filter((link) => link.tags.includes(tag));
+        const sub = userSub();
+        if (tag === null) {
+          return store
+            .entities()
+            .map((l) => ({ ...l, isOwnedByCurrentUser: sub === l.owner }));
+        }
+        const filtered = store
+          .entities()
+          .filter((link) => link.tags.includes(tag || ''))
+          .map((l) => ({
+            ...l,
+            isOwnedByCurrentUser: sub === l.owner,
+          }));
+        return filtered;
       }),
     };
   }),
