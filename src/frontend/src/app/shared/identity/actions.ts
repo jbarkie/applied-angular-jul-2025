@@ -6,5 +6,6 @@ export const IdentityActions = createActionGroup({
   events: {
     'Login Requested': emptyProps(),
     'Login Succeeded': props<{ payload: IdentityState }>(),
+    'Logout Requested': emptyProps(),
   },
 });
