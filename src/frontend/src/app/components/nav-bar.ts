@@ -1,6 +1,13 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RoutedLink } from './routed-link';
+import { Store } from '@ngrx/store';
+import { IdentityActions } from '../shared/identity/actions';
 
 @Component({
   selector: 'app-nav-bar',
@@ -47,13 +54,19 @@ import { RoutedLink } from './routed-link';
         </ul>
       </div>
       <div class="navbar-end">
-        <a class="btn">Button</a>
+        <button (click)="logIn()" class="btn">Login</button>
       </div>
     </div>
   `,
   styles: ``,
 })
 export class NavBar {
+  reduxStore = inject(Store);
+
+  logIn() {
+    this.reduxStore.dispatch(IdentityActions.loginRequested());
+  }
+
   links = signal([
     {
       href: ['about'],
