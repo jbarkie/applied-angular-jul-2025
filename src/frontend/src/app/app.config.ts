@@ -12,6 +12,7 @@ import { provideEffects } from '@ngrx/effects';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { IdentityFeature } from './shared/identity/store';
+import { IdentityEffects } from './shared/identity/effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +26,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideStore(),
     provideStoreDevtools(),
-    provideEffects([]),
+    provideEffects([IdentityEffects]),
     provideState(IdentityFeature),
   ],
 };
