@@ -38,7 +38,7 @@ import { LinksStore } from '../services/links-store';
 
     @if (store.filteredLinks()) {
       <ul class="list rounded-box bg-base-300">
-        @for (link of store.entities(); track link.id) {
+        @for (link of store.filteredLinks(); track link.id) {
           <li class="list-row mb-2">
             <div>
               <p class="text-md font-bold">{{ link.title }}</p>
@@ -48,7 +48,7 @@ import { LinksStore } from '../services/links-store';
             </div>
             <div></div>
             <div>
-              @for (tag of store.tags(); track tag) {
+              @for (tag of link.tags; track tag) {
                 <button
                   (click)="store.setFilterTag(tag)"
                   class="badge badge-primary mr-2"
