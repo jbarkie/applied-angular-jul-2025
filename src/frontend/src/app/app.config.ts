@@ -6,11 +6,12 @@ import {
   withPreloading,
   withViewTransitions,
 } from '@angular/router';
-import { provideStore } from '@ngrx/store';
+import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { IdentityFeature } from './shared/identity/store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,5 +26,6 @@ export const appConfig: ApplicationConfig = {
     provideStore(),
     provideStoreDevtools(),
     provideEffects([]),
+    provideState(IdentityFeature),
   ],
 };
