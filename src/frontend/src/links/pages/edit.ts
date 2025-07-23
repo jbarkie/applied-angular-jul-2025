@@ -1,10 +1,12 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   selector: 'app-links-edit',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [],
-  template: ` <p>Edit a link</p> `,
+  template: ` <p>Editing a link with id of {{ id() }}</p> `,
   styles: ``,
 })
-export class Edit {}
+export class Edit {
+  id = input<string>();
+}
