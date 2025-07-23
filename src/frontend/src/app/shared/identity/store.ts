@@ -1,4 +1,4 @@
-import { createFeature, createReducer, on } from '@ngrx/store';
+import { createFeature, createReducer, createSelector, on } from '@ngrx/store';
 import { IdentityActions } from './actions';
 
 export type IdentityState = {
@@ -17,4 +17,9 @@ export const IdentityFeature = createFeature({
     initialState,
     on(IdentityActions.loginSucceeded, (state, { payload }) => payload),
   ),
+  extraSelectors: ({ selectSub }) => ({
+    selectIsLoggedIn: createSelector(selectSub, (s) => s !== null),
+  }),
 });
+
+export const { selectSub, selectRoles } = IdentityFeature;
