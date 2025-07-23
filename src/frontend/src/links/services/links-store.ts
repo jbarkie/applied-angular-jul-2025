@@ -44,7 +44,7 @@ export const LinksStore = signalStore(
     return {
       clearFilterTag: () => patchState(state, clearFilteringTag()),
       setFilterTag: (tag: string) => patchState(state, setFilterTag(tag)),
-      load: rxMethod<{ isBackgroundFetch: boolean }>(
+      _load: rxMethod<{ isBackgroundFetch: boolean }>(
         pipe(
           tap((p) =>
             patchState(
@@ -84,10 +84,10 @@ export const LinksStore = signalStore(
   }),
   withHooks({
     onInit(store) {
-      store.load({ isBackgroundFetch: false });
+      store._load({ isBackgroundFetch: false });
       console.log('Links Store created.');
       setInterval(() => {
-        store.load({ isBackgroundFetch: true });
+        store._load({ isBackgroundFetch: true });
       }, 5000);
     },
     onDestroy() {
