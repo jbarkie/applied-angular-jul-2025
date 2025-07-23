@@ -12,6 +12,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LinksApiService } from './links-api';
 import { exhaustMap, pipe, tap } from 'rxjs';
 import { inject } from '@angular/core';
+import { withApiState } from './api-state-feature';
 
 type SortOptions = 'newest' | 'oldest';
 
@@ -23,6 +24,7 @@ export const LinksStore = signalStore(
   withState<LinkState>({
     sortOrder: 'newest',
   }),
+  withApiState(),
   withEntities<ApiLink>(),
   withDevtools('LinksStore'),
   withMethods((state) => {
