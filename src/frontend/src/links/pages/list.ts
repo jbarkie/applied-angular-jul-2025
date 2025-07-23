@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LinksStore } from '../services/links-store';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-links-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
+  imports: [RouterLink],
   template: `
     <p>List goes here</p>
 
@@ -40,7 +41,13 @@ import { LinksStore } from '../services/links-store';
             <p class="text-md font-bold">{{ link.title }}</p>
             <a class="link" [href]="link.url" target="_blank">{{ link.url }}</a>
           </div>
-          <div></div>
+          <div>
+            <a
+              [routerLink]="['..', link.id, 'edit']"
+              class="btn btn-sm btn-accent"
+              >Edit link</a
+            >
+          </div>
           <div>
             @for (tag of link.tags; track tag) {
               <button
