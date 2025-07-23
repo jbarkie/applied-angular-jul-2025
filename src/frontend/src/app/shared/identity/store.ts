@@ -22,4 +22,4 @@ export const IdentityFeature = createFeature({
   }),
 });
 
-export const { selectSub, selectRoles } = IdentityFeature;
+export const { selectSub, selectRoles, selectIsLoggedIn } = IdentityFeature;
