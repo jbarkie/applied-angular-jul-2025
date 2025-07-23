@@ -10,7 +10,7 @@ const FAKE_LINKS = [
     owner: 'b145842',
   },
   {
-    id: '1',
+    id: '2',
     title: 'React Documentation',
     url: 'https://reactjs.org/docs',
     tags: ['react', 'documentation'],
@@ -18,7 +18,7 @@ const FAKE_LINKS = [
     owner: 'c732491',
   },
   {
-    id: '1',
+    id: '3',
     title: 'Typescript Handbook',
     url: 'https://www.typescriptlang.org/docs/handbook/intro.html',
     tags: ['typescript', 'documentation'],
