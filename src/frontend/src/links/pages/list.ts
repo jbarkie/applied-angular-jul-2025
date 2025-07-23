@@ -1,8 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
-  signal,
+  inject
 } from '@angular/core';
 import { LinksStore } from '../services/links-store';
 
@@ -36,38 +35,33 @@ import { LinksStore } from '../services/links-store';
       </form>
     }
 
-    @if (store.filteredLinks()) {
-      <ul class="list rounded-box bg-base-300">
-        @for (link of store.filteredLinks(); track link.id) {
-          <li class="list-row mb-2">
-            <div>
-              <p class="text-md font-bold">{{ link.title }}</p>
-              <a class="link" [href]="link.url" target="_blank">{{
-                link.url
-              }}</a>
-            </div>
-            <div></div>
-            <div>
-              @for (tag of link.tags; track tag) {
-                <button
-                  (click)="store.setFilterTag(tag)"
-                  class="badge badge-primary mr-2"
-                >
-                  {{ tag }}
-                </button>
-              }
-            </div>
-          </li>
-        } @empty {
-          <p>Sorry, no links. Add some!</p>
-        }
-      </ul>
-      <p class="mt-2">You are sorting by: {{ store.sortOrder() }}</p>
-    }
+    <ul class="list rounded-box bg-base-300">
+      @for (link of store.filteredLinks(); track link.id) {
+        <li class="list-row mb-2">
+          <div>
+            <p class="text-md font-bold">{{ link.title }}</p>
+            <a class="link" [href]="link.url" target="_blank">{{ link.url }}</a>
+          </div>
+          <div></div>
+          <div>
+            @for (tag of link.tags; track tag) {
+              <button
+                (click)="store.setFilterTag(tag)"
+                class="badge badge-primary mr-2"
+              >
+                {{ tag }}
+              </button>
+            }
+          </div>
+        </li>
+      } @empty {
+        <p>Sorry, no links. Add some!</p>
+      }
+    </ul>
+    <p class="mt-2">You are sorting by: {{ store.sortOrder() }}</p>
   `,
   styles: ``,
 })
 export class LinksList {
   store = inject(LinksStore);
-  filterTag = signal<string | null>(null);
 }
