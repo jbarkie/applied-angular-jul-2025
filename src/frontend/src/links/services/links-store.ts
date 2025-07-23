@@ -12,7 +12,11 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LinksApiService } from './links-api';
 import { exhaustMap, pipe, tap } from 'rxjs';
 import { inject } from '@angular/core';
-import { withApiState } from './api-state-feature';
+import {
+  setIsFulfilled,
+  setIsLoading,
+  withApiState,
+} from './api-state-feature';
 
 type SortOptions = 'newest' | 'oldest';
 
@@ -32,10 +36,13 @@ export const LinksStore = signalStore(
     return {
       load: rxMethod<void>(
         pipe(
+          tap(() => patchState(state, setIsLoading())),
           exhaustMap(() =>
             service
               .getLinks()
-              .pipe(tap((r) => patchState(state, setEntities(r)))),
+              .pipe(
+                tap((r) => patchState(state, setEntities(r), setIsFulfilled())),
+              ),
           ),
         ),
       ),
