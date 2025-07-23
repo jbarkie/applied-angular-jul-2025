@@ -8,7 +8,7 @@ import { LinksStore } from '../services/links-store';
   template: `
     <div class="flex flex-row gap-4">
       <div class="w-1/3">
-        <p>Available tags</p>
+        <p>Available Tags</p>
         <ul class="list rounded-box bg-base-300">
           @for (tag of store.tags(); track tag) {
             <li class="dropdown dropdown-center">
@@ -30,7 +30,7 @@ import { LinksStore } from '../services/links-store';
         <p>Watched Tags</p>
       </div>
       <div class="w-1/3">
-        <p>Ignored Tags Tags</p>
+        <p>Ignored Tags</p>
       </div>
     </div>
   `,
