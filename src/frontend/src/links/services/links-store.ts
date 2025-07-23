@@ -18,27 +18,31 @@ import {
   setIsLoading,
   withApiState,
 } from './api-state-feature';
+import {
+  clearFilteringTag,
+  setFilterTag,
+  withLinkFiltering,
+} from './link-filter-feature';
 
 type SortOptions = 'newest' | 'oldest';
 
 type LinkState = {
   sortOrder: SortOptions;
-  filterTag: string | null;
 };
 
 export const LinksStore = signalStore(
   withState<LinkState>({
     sortOrder: 'newest',
-    filterTag: null,
   }),
   withApiState(),
   withEntities<ApiLink>(),
   withDevtools('LinksStore'),
+  withLinkFiltering(),
   withMethods((state) => {
     const service = inject(LinksApiService);
     return {
-      clearFilterTag: () => patchState(state, { filterTag: null }),
-      setFilterTag: (tag: string) => patchState(state, { filterTag: tag }),
+      clearFilterTag: () => patchState(state, clearFilteringTag()),
+      setFilterTag: (tag: string) => patchState(state, setFilterTag(tag)),
       load: rxMethod<void>(
         pipe(
           tap(() => patchState(state, setIsLoading())),
