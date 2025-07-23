@@ -1,4 +1,5 @@
-import { createFeature, createReducer } from '@ngrx/store';
+import { createFeature, createReducer, on } from '@ngrx/store';
+import { IdentityActions } from './actions';
 
 export type IdentityState = {
   sub: string | null;
@@ -12,5 +13,8 @@ const initialState: IdentityState = {
 
 export const IdentityFeature = createFeature({
   name: 'identity',
-  reducer: createReducer(initialState),
+  reducer: createReducer(
+    initialState,
+    on(IdentityActions.loginSucceeded, (state, { payload }) => payload),
+  ),
 });
