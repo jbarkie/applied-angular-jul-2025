@@ -1,4 +1,10 @@
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { setEntities, withEntities } from '@ngrx/signals/entities';
 import { ApiLink } from '../types';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
@@ -34,5 +40,14 @@ export const LinksStore = signalStore(
       changeSortOrder: (sortOrder: SortOptions) =>
         patchState(state, { sortOrder: sortOrder }),
     };
+  }),
+  withHooks({
+    onInit(store) {
+      store.load();
+      console.log('Links Store created.');
+    },
+    onDestroy() {
+      console.log('Links Store destroyed');
+    },
   }),
 );
