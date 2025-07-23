@@ -15,6 +15,7 @@ export function withApiState() {
     withComputed((store) => {
       return {
         isLoading: computed(() => store.state() === 'isLoading'),
+        isFetching: computed(() => store.state() === 'fetching'),
       };
     }),
   );
