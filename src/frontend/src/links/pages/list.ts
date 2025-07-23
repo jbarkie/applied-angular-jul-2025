@@ -42,11 +42,13 @@ import { RouterLink } from '@angular/router';
             <a class="link" [href]="link.url" target="_blank">{{ link.url }}</a>
           </div>
           <div>
-            <a
-              [routerLink]="['..', link.id, 'edit']"
-              class="btn btn-sm btn-accent"
-              >Edit link</a
-            >
+            @if (link.isOwnedByCurrentUser) {
+              <a
+                [routerLink]="['..', link.id, 'edit']"
+                class="btn btn-sm btn-accent"
+                >Edit link</a
+              >
+            }
           </div>
           <div>
             @for (tag of link.tags; track tag) {
