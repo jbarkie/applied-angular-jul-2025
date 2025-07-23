@@ -14,6 +14,7 @@ import { LinksApiService } from './links-api';
 import { exhaustMap, pipe, tap } from 'rxjs';
 import { computed, inject } from '@angular/core';
 import {
+  setFetching,
   setIsFulfilled,
   setIsLoading,
   withApiState,
@@ -43,9 +44,14 @@ export const LinksStore = signalStore(
     return {
       clearFilterTag: () => patchState(state, clearFilteringTag()),
       setFilterTag: (tag: string) => patchState(state, setFilterTag(tag)),
-      load: rxMethod<void>(
+      load: rxMethod<{ isBackgroundFetch: boolean }>(
         pipe(
-          tap(() => patchState(state, setIsLoading())),
+          tap((p) =>
+            patchState(
+              state,
+              p.isBackgroundFetch ? setFetching() : setIsLoading(),
+            ),
+          ),
           exhaustMap(() =>
             service
               .getLinks()
@@ -78,8 +84,11 @@ export const LinksStore = signalStore(
   }),
   withHooks({
     onInit(store) {
-      store.load();
+      store.load({ isBackgroundFetch: false });
       console.log('Links Store created.');
+      setInterval(() => {
+        store.load({ isBackgroundFetch: true });
+      }, 5000);
     },
     onDestroy() {
       console.log('Links Store destroyed');
