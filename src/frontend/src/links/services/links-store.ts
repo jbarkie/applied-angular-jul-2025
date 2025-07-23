@@ -1,7 +1,11 @@
 import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
-import { withEntities } from '@ngrx/signals/entities';
+import { setEntities, withEntities } from '@ngrx/signals/entities';
 import { ApiLink } from '../types';
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { LinksApiService } from './links-api';
+import { exhaustMap, pipe, tap } from 'rxjs';
+import { inject } from '@angular/core';
 
 type SortOptions = 'newest' | 'oldest';
 
@@ -16,7 +20,17 @@ export const LinksStore = signalStore(
   withEntities<ApiLink>(),
   withDevtools('LinksStore'),
   withMethods((state) => {
+    const service = inject(LinksApiService);
     return {
+      load: rxMethod<void>(
+        pipe(
+          exhaustMap(() =>
+            service
+              .getLinks()
+              .pipe(tap((r) => patchState(state, setEntities(r)))),
+          ),
+        ),
+      ),
       changeSortOrder: (sortOrder: SortOptions) =>
         patchState(state, { sortOrder: sortOrder }),
     };
