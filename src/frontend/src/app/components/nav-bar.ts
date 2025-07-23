@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
 import { RoutedLink } from './routed-link';
 import { Store } from '@ngrx/store';
 import { IdentityActions } from '../shared/identity/actions';
+import { selectIsLoggedIn, selectSub } from '../shared/identity/store';
 
 @Component({
   selector: 'app-nav-bar',
@@ -54,7 +55,11 @@ import { IdentityActions } from '../shared/identity/actions';
         </ul>
       </div>
       <div class="navbar-end">
-        <button (click)="logIn()" class="btn">Login</button>
+        @if (isLoggedIn()) {
+          <button (click)="logOut()" class="btn">Logout {{ sub() }}</button>
+        } @else {
+          <button (click)="logIn()" class="btn">Login</button>
+        }
       </div>
     </div>
   `,
@@ -63,8 +68,15 @@ import { IdentityActions } from '../shared/identity/actions';
 export class NavBar {
   reduxStore = inject(Store);
 
+  sub = this.reduxStore.selectSignal(selectSub);
+  isLoggedIn = this.reduxStore.selectSignal(selectIsLoggedIn);
+
   logIn() {
     this.reduxStore.dispatch(IdentityActions.loginRequested());
+  }
+
+  logOut() {
+    this.reduxStore.dispatch(IdentityActions.logoutRequested());
   }
 
   links = signal([
