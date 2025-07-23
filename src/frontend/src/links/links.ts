@@ -9,7 +9,7 @@ import { LinksStore } from './services/links-store';
   providers: [LinksStore],
   template: `
     <div class="flex flex-row gap-4">
-      <a routerLink="/links" class="link">List</a>
+      <a routerLink="list" class="link">List</a>
       <a routerLink="prefs" class="link">Prefs</a>
     </div>
 
