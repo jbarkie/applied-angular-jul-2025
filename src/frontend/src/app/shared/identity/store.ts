@@ -16,6 +16,7 @@ export const IdentityFeature = createFeature({
   reducer: createReducer(
     initialState,
     on(IdentityActions.loginSucceeded, (state, { payload }) => payload),
+    on(IdentityActions.logoutRequested, () => initialState),
   ),
   extraSelectors: ({ selectSub }) => ({
     selectIsLoggedIn: createSelector(selectSub, (s) => s !== null),
