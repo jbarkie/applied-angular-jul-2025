@@ -1,9 +1,4 @@
-import {
-  Component,
-  ChangeDetectionStrategy,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { LinksStore } from '../services/links-store';
 
 @Component({
@@ -20,7 +15,7 @@ import { LinksStore } from '../services/links-store';
               <div tabindex="0" role="button" class="btn m-1">
                 {{ tag }}
 
-                @if (watchedTags().includes(tag)) {
+                @if (store.watchedTags().includes(tag)) {
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -36,7 +31,7 @@ import { LinksStore } from '../services/links-store';
                     />
                   </svg>
                 }
-                @if (ignoredTags().includes(tag)) {
+                @if (store.ignoredTags().includes(tag)) {
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -57,14 +52,18 @@ import { LinksStore } from '../services/links-store';
                 tabindex="0"
                 class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
               >
-                @if (watchedTags().includes(tag) === false) {
+                @if (store.watchedTags().includes(tag) === false) {
                   <li>
-                    <button (click)="addToWatched(tag)">Watched Tags</button>
+                    <button (click)="store.addToWatched(tag)">
+                      Watched Tags
+                    </button>
                   </li>
                 }
-                @if (ignoredTags().includes(tag) === false) {
+                @if (store.ignoredTags().includes(tag) === false) {
                   <li>
-                    <button (click)="addToIgnored(tag)">Ignored Tags</button>
+                    <button (click)="store.addToIgnored(tag)">
+                      Ignored Tags
+                    </button>
                   </li>
                 }
               </ul>
@@ -76,7 +75,7 @@ import { LinksStore } from '../services/links-store';
       </div>
       <div class="w-2/3">
         <p>Watched Tags</p>
-        @for (tag of watchedTags(); track tag) {
+        @for (tag of store.watchedTags(); track tag) {
           <li class="dropdown dropdown-center">
             <div tabindex="0" role="button" class="btn m-1">{{ tag }}</div>
             <ul
@@ -84,7 +83,7 @@ import { LinksStore } from '../services/links-store';
               class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
             >
               <li>
-                <button (click)="removeFromWatched(tag)">
+                <button (click)="store.removeFromWatched(tag)">
                   Remove From Watched
                 </button>
               </li>
@@ -96,7 +95,7 @@ import { LinksStore } from '../services/links-store';
       </div>
       <div class="w-1/3">
         <p>Ignored Tags</p>
-        @for (tag of ignoredTags(); track tag) {
+        @for (tag of store.ignoredTags(); track tag) {
           <li class="dropdown dropdown-center">
             <div tabindex="0" role="button" class="btn m-1">{{ tag }}</div>
             <ul
@@ -104,7 +103,7 @@ import { LinksStore } from '../services/links-store';
               class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
             >
               <li>
-                <button (click)="removeFromIgnored(tag)">
+                <button (click)="store.removeFromIgnored(tag)">
                   Remove From Ignored
                 </button>
               </li>
@@ -120,26 +119,4 @@ import { LinksStore } from '../services/links-store';
 })
 export class UserTagFilter {
   store = inject(LinksStore);
-
-  watchedTags = signal<string[]>([]);
-  ignoredTags = signal<string[]>([]);
-
-  addToWatched(tag: string) {
-    this.watchedTags.update((tags) => [tag, ...tags]);
-    if (this.ignoredTags().includes(tag)) {
-      this.ignoredTags.update((tags) => tags.filter((t) => t !== tag));
-    }
-  }
-  addToIgnored(tag: string) {
-    this.ignoredTags.update((tags) => [tag, ...tags]);
-    if (this.watchedTags().includes(tag)) {
-      this.watchedTags.update((tags) => tags.filter((t) => t !== tag));
-    }
-  }
-  removeFromWatched(tag: string) {
-    this.watchedTags.update((tags) => tags.filter((t) => t !== tag));
-  }
-  removeFromIgnored(tag: string) {
-    this.ignoredTags.update((tags) => tags.filter((t) => t !== tag));
-  }
 }
