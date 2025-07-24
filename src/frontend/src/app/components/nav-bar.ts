@@ -9,6 +9,7 @@ import { RoutedLink } from './routed-link';
 import { Store } from '@ngrx/store';
 import { IdentityActions } from '../shared/identity/actions';
 import { selectIsLoggedIn, selectSub } from '../shared/identity/store';
+import { selectLinksNavbar } from '../shared/nav-bar/store';
 
 @Component({
   selector: 'app-nav-bar',
@@ -56,6 +57,11 @@ import { selectIsLoggedIn, selectSub } from '../shared/identity/store';
       </div>
       <div class="navbar-end">
         @if (isLoggedIn()) {
+          @let summary = linksSummary();
+          <span class="alert alert-success"
+            >You are watching {{ summary.numberOfWatchedTags }} tags and
+            ignoring {{ summary.numberOfIgnoredTags }} tags</span
+          >
           <button (click)="logOut()" class="btn">Logout {{ sub() }}</button>
         } @else {
           <button (click)="logIn()" class="btn">Login</button>
@@ -67,6 +73,8 @@ import { selectIsLoggedIn, selectSub } from '../shared/identity/store';
 })
 export class NavBar {
   reduxStore = inject(Store);
+
+  linksSummary = this.reduxStore.selectSignal(selectLinksNavbar);
 
   sub = this.reduxStore.selectSignal(selectSub);
   isLoggedIn = this.reduxStore.selectSignal(selectIsLoggedIn);
