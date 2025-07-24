@@ -11,7 +11,7 @@ import {
 import { setEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { exhaustMap, pipe, tap } from 'rxjs';
+import { exhaustMap, interval, pipe, tap } from 'rxjs';
 import { selectSub } from '../../app/shared/identity/store';
 import { ApiLink } from '../types';
 import {
@@ -26,6 +26,8 @@ import {
   withLinkFiltering,
 } from './link-filter-feature';
 import { LinksApiService } from './links-api';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { withUserPrefs } from './user-prefs-feature';
 
 type SortOptions = 'newest' | 'oldest';
 
@@ -41,6 +43,7 @@ export const LinksStore = signalStore(
   withEntities<ApiLink>(),
   withDevtools('LinksStore'),
   withLinkFiltering(),
+  withUserPrefs(),
   withMethods((state) => {
     const service = inject(LinksApiService);
     return {
@@ -101,9 +104,9 @@ export const LinksStore = signalStore(
     onInit(store) {
       store._load({ isBackgroundFetch: false });
       console.log('Links Store created.');
-      setInterval(() => {
-        store._load({ isBackgroundFetch: true });
-      }, 5000);
+      interval(5000)
+        .pipe(takeUntilDestroyed())
+        .subscribe(() => store._load({ isBackgroundFetch: true }));
     },
     onDestroy() {
       console.log('Links Store destroyed');
