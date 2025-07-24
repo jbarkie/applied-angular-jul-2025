@@ -12,18 +12,26 @@ const FAKE_LINKS = [
   {
     id: '2',
     title: 'React Documentation',
-    url: 'https://reactjs.org/docs',
+    url: 'https://reactjs.org/docs/getting-started.html',
     tags: ['react', 'documentation'],
-    dateAdded: new Date('2024-06-30'),
-    owner: 'c732491',
+    dateAdded: new Date('2024-04-20'),
+    owner: 'b398939',
   },
   {
     id: '3',
     title: 'Typescript Handbook',
     url: 'https://www.typescriptlang.org/docs/handbook/intro.html',
     tags: ['typescript', 'documentation'],
+    dateAdded: new Date('2025-06-30'),
+    owner: 'y393939',
+  },
+  {
+    id: '4',
+    title: 'Mozilla Developer Network',
+    url: 'https://developer.mozilla.org/en-US/',
+    tags: ['web', 'documentation', 'html', 'css', 'javascript'],
     dateAdded: new Date('2023-03-15'),
-    owner: 'b875234',
+    owner: 'b393939',
   },
 ];
 
